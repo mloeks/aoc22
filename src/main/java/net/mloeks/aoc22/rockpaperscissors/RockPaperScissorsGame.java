@@ -1,35 +1,24 @@
 package net.mloeks.aoc22.rockpaperscissors;
 
+import net.mloeks.aoc22.util.PuzzleInputReader;
 import org.springframework.data.util.Pair;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 import static net.mloeks.aoc22.rockpaperscissors.Shape.fromCode;
 
 public class RockPaperScissorsGame {
 
-    private final List<Pair<Shape, Shape>> strategyGuide;
     private int totalScore;
+    private final Strategy playingStrategy;
 
-    public RockPaperScissorsGame(final String strategyResource, final Strategy strategy) throws IOException, URISyntaxException {
-        Path path = Paths.get(getClass().getClassLoader().getResource(strategyResource).toURI());
-
+    public RockPaperScissorsGame(final String inputStrategyGuide, final Strategy playingStrategy) {
         this.totalScore = 0;
-        try (Stream<String> lines = Files.lines(path)) {
-                this.strategyGuide = lines
-                        .map(line -> {
-                            String[] shapes = line.trim().split(" ");
-                            Shape opponent = fromCode(shapes[0]);
-                            Shape me = strategy.chooseShapeToPlay(shapes[1], opponent);
-                            return Pair.of(opponent, me);
-                        })
-                        .toList();
+        this.playingStrategy = playingStrategy;
+
+        try (PuzzleInputReader reader = new PuzzleInputReader(inputStrategyGuide)) {
+            reader.stream(mapRounds())
+                    .forEach(this::playRound);
         }
     }
 
@@ -37,13 +26,20 @@ public class RockPaperScissorsGame {
         return totalScore;
     }
 
-    public void play() {
-        this.strategyGuide.forEach(round -> {
-            totalScore += round.getSecond().getPoints();
+    private Function<String, Pair<Shape, Shape>> mapRounds() {
+        return line -> {
+            String[] shapes = line.trim().split(" ");
+            Shape opponent = fromCode(shapes[0]);
+            Shape me = playingStrategy.chooseShapeToPlay(shapes[1], opponent);
+            return Pair.of(opponent, me);
+        };
+    }
 
-            int result = Shape.compare(round.getFirst(), round.getSecond());
-            if (result < 0) totalScore += 6;
-            if (result == 0) totalScore += 3;
-        });
+    private void playRound(final Pair<Shape, Shape> round) {
+        totalScore += round.getSecond().getPoints();
+
+        int result = Shape.compare(round.getFirst(), round.getSecond());
+        if (result < 0) totalScore += 6;
+        if (result == 0) totalScore += 3;
     }
 }

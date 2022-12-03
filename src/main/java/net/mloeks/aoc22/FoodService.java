@@ -1,28 +1,21 @@
 package net.mloeks.aoc22;
 
-import org.apache.groovy.parser.antlr4.util.StringUtils;
+import net.mloeks.aoc22.util.PuzzleInputReader;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.apache.groovy.parser.antlr4.util.StringUtils.isEmpty;
 
 @Component
 public class FoodService {
 
-    public List<Integer> getCaloriesCarriedByElves(final String input) throws URISyntaxException, IOException {
-        List<Integer> caloriesCarriedByElf = new LinkedList<>();
-        Path path = Paths.get(getClass().getClassLoader().getResource(input).toURI());
-
-        int sumCalories = 0;
-        try (Stream<String> lines = Files.lines(path)) {
-            for (String line : lines.toList()) {
+    public List<Integer> getCaloriesCarriedByElves(final String input) {
+        final List<Integer> caloriesCarriedByElf = new LinkedList<>();
+        try (final PuzzleInputReader reader = new PuzzleInputReader(input)) {
+            int sumCalories = 0;
+            for (String line : reader.stream().toList()) {
                 if (isEmpty(line.trim())) {
                     caloriesCarriedByElf.add(sumCalories);
                     sumCalories = 0;
