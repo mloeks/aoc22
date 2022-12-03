@@ -3,6 +3,9 @@ package net.mloeks.aoc22;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
 import net.mloeks.aoc22.rockpaperscissors.SimpleXyzMappingStrategy;
+import net.mloeks.aoc22.rucksack.BadgeFinder;
+import net.mloeks.aoc22.rucksack.RucksackOrganiser;
+import net.mloeks.aoc22.rucksack.RucksackUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -40,4 +43,19 @@ public class AocTest {
         assertThat(game.getTotalScore()).isEqualTo(13693);
     }
 
+    @Test
+    public void day3_1() {
+        RucksackOrganiser rucksackOrganiser = new RucksackOrganiser("03.txt");
+        int sumOfPriorities = rucksackOrganiser.getDuplicatedItems().stream()
+                .mapToInt(RucksackUtils::getItemPriority).sum();
+        assertThat(sumOfPriorities).isEqualTo(7553);
+    }
+
+    @Test
+    public void day3_2() {
+        BadgeFinder badgeFinder = new BadgeFinder("03.txt");
+        int sumOfBadgePriorities = badgeFinder.getBadges().stream()
+                .mapToInt(RucksackUtils::getItemPriority).sum();
+        assertThat(sumOfBadgePriorities).isEqualTo(2758);
+    }
 }
