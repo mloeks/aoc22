@@ -1,6 +1,5 @@
 package net.mloeks.aoc22;
 
-import net.mloeks.aoc22.campcleanup.SectionAssignmentAnalyzer;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
 import net.mloeks.aoc22.rockpaperscissors.SimpleXyzMappingStrategy;

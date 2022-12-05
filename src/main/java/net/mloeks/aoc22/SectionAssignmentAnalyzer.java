@@ -1,4 +1,4 @@
-package net.mloeks.aoc22.campcleanup;
+package net.mloeks.aoc22;
 
 import net.mloeks.aoc22.util.PuzzleInputReader;
 import net.mloeks.aoc22.util.SimpleRange;
