@@ -20,7 +20,7 @@ public class SectionAssignmentAnalyzer {
             final String elfPairAssigments, final Predicate<Pair<SimpleRange, SimpleRange>> isPairRedundant
     ) {
         try (PuzzleInputReader reader = new PuzzleInputReader(elfPairAssigments)) {
-            this.redundantPairsCount = (int) reader.splittingBy(",")
+            this.redundantPairsCount = (int) reader.streamSplittingBy(",")
                     .map(sectionAssignments -> Pair.of(
                             sectionAssignmentToRange(sectionAssignments.getFirst()),
                             sectionAssignmentToRange(sectionAssignments.getSecond()))

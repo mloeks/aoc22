@@ -15,11 +15,11 @@ public class FoodService {
         final List<Integer> caloriesCarriedByElf = new LinkedList<>();
         int sumCalories = 0;
         for (String line : PuzzleInputReader.readAll(input)) {
-            if (isEmpty(line)) {
+            if (isEmpty(line.trim())) {
                 caloriesCarriedByElf.add(sumCalories);
                 sumCalories = 0;
             } else {
-                sumCalories += Integer.parseInt(line);
+                sumCalories += Integer.parseInt(line.trim());
             }
         }
 

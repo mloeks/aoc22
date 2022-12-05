@@ -3,8 +3,6 @@ package net.mloeks.aoc22.rockpaperscissors;
 import net.mloeks.aoc22.util.PuzzleInputReader;
 import org.springframework.data.util.Pair;
 
-import java.util.function.Function;
-
 import static net.mloeks.aoc22.rockpaperscissors.Shape.fromCode;
 
 public class RockPaperScissorsGame {
@@ -17,7 +15,7 @@ public class RockPaperScissorsGame {
         this.playingStrategy = playingStrategy;
 
         try (PuzzleInputReader reader = new PuzzleInputReader(inputStrategyGuide)) {
-            reader.splittingBy(" ")
+            reader.streamSplittingBy(" ")
                   .map(this::mapRounds)
                   .forEach(this::playRound);
         }

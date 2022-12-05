@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.function.Function.identity;
@@ -38,13 +39,17 @@ public class PuzzleInputReader implements AutoCloseable {
     }
 
     public <T> Stream<T> stream(final Function<String, T> lineMapper) {
+        return stream(l -> true, lineMapper);
+    }
+
+    public <T> Stream<T> stream(final Predicate<String> lineFilter, final Function<String, T> lineMapper) {
         return this.puzzleInputStream
-                .map(String::trim)
+                .filter(lineFilter)
                 .map(lineMapper);
     }
 
-    public Stream<Pair<String, String>> splittingBy(final String regex) {
-        return stream(line -> line.split(regex)).map(arr -> Pair.of(arr[0], arr[1]));
+    public Stream<Pair<String, String>> streamSplittingBy(final String regex) {
+        return stream(line -> line.trim().split(regex)).map(arr -> Pair.of(arr[0], arr[1]));
     }
 
     @Override
