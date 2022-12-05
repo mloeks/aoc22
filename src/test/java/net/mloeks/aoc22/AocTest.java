@@ -1,5 +1,6 @@
 package net.mloeks.aoc22;
 
+import net.mloeks.aoc22.campcleanup.SectionAssignmentAnalyzer;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
 import net.mloeks.aoc22.rockpaperscissors.SimpleXyzMappingStrategy;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -57,5 +59,19 @@ public class AocTest {
         int sumOfBadgePriorities = badgeFinder.getBadges().stream()
                 .mapToInt(RucksackUtils::getItemPriority).sum();
         assertThat(sumOfBadgePriorities).isEqualTo(2758);
+    }
+
+    @Test
+    public void day4_1() {
+        SectionAssignmentAnalyzer sectionAssignmentAnalyzer =
+                new SectionAssignmentAnalyzer("04.txt", SectionAssignmentAnalyzer.CONTAINS);
+        assertThat(sectionAssignmentAnalyzer.getRedundantPairsCount()).isEqualTo(471);
+    }
+
+    @Test
+    public void day4_2() {
+        SectionAssignmentAnalyzer sectionAssignmentAnalyzer =
+                new SectionAssignmentAnalyzer("04.txt", SectionAssignmentAnalyzer.OVERLAPS);
+        assertThat(sectionAssignmentAnalyzer.getRedundantPairsCount()).isEqualTo(888);
     }
 }
