@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.function.Function.identity;
+
 public class PuzzleInputReader implements AutoCloseable {
 
     private final Stream<String> puzzleInputStream;
@@ -25,16 +27,18 @@ public class PuzzleInputReader implements AutoCloseable {
 
     public static List<String> readAll(final String resource) {
         try (PuzzleInputReader reader = new PuzzleInputReader(resource)) {
-            return reader.puzzleInputStream.toList();
+            return reader.stream().toList();
         }
     }
 
     public Stream<String> stream() {
-        return this.puzzleInputStream;
+        return stream(identity());
     }
 
     public <T> Stream<T> stream(final Function<String, T> lineMapper) {
-        return this.puzzleInputStream.map(lineMapper);
+        return this.puzzleInputStream
+                .map(String::trim)
+                .map(lineMapper);
     }
 
     @Override

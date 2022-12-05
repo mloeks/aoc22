@@ -13,15 +13,13 @@ public class FoodService {
 
     public List<Integer> getCaloriesCarriedByElves(final String input) {
         final List<Integer> caloriesCarriedByElf = new LinkedList<>();
-        try (final PuzzleInputReader reader = new PuzzleInputReader(input)) {
-            int sumCalories = 0;
-            for (String line : reader.stream().toList()) {
-                if (isEmpty(line.trim())) {
-                    caloriesCarriedByElf.add(sumCalories);
-                    sumCalories = 0;
-                } else {
-                    sumCalories += Integer.parseInt(line.trim());
-                }
+        int sumCalories = 0;
+        for (String line : PuzzleInputReader.readAll(input)) {
+            if (isEmpty(line)) {
+                caloriesCarriedByElf.add(sumCalories);
+                sumCalories = 0;
+            } else {
+                sumCalories += Integer.parseInt(line);
             }
         }
 

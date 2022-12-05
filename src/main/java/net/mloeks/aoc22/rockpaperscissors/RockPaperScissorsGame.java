@@ -28,7 +28,7 @@ public class RockPaperScissorsGame {
 
     private Function<String, Pair<Shape, Shape>> mapRounds() {
         return line -> {
-            String[] shapes = line.trim().split(" ");
+            String[] shapes = line.split(" ");
             Shape opponent = fromCode(shapes[0]);
             Shape me = playingStrategy.chooseShapeToPlay(shapes[1], opponent);
             return Pair.of(opponent, me);
