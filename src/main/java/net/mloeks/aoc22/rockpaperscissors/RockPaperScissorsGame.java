@@ -17,8 +17,9 @@ public class RockPaperScissorsGame {
         this.playingStrategy = playingStrategy;
 
         try (PuzzleInputReader reader = new PuzzleInputReader(inputStrategyGuide)) {
-            reader.stream(mapRounds())
-                    .forEach(this::playRound);
+            reader.splittingBy(" ")
+                  .map(this::mapRounds)
+                  .forEach(this::playRound);
         }
     }
 
@@ -26,13 +27,10 @@ public class RockPaperScissorsGame {
         return totalScore;
     }
 
-    private Function<String, Pair<Shape, Shape>> mapRounds() {
-        return line -> {
-            String[] shapes = line.split(" ");
-            Shape opponent = fromCode(shapes[0]);
-            Shape me = playingStrategy.chooseShapeToPlay(shapes[1], opponent);
-            return Pair.of(opponent, me);
-        };
+    private Pair<Shape, Shape> mapRounds(Pair<String, String> shapes) {
+        Shape opponent = fromCode(shapes.getFirst());
+        Shape me = playingStrategy.chooseShapeToPlay(shapes.getSecond(), opponent);
+        return Pair.of(opponent, me);
     }
 
     private void playRound(final Pair<Shape, Shape> round) {

@@ -1,5 +1,7 @@
 package net.mloeks.aoc22.util;
 
+import org.springframework.data.util.Pair;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,6 +41,10 @@ public class PuzzleInputReader implements AutoCloseable {
         return this.puzzleInputStream
                 .map(String::trim)
                 .map(lineMapper);
+    }
+
+    public Stream<Pair<String, String>> splittingBy(final String regex) {
+        return stream(line -> line.split(regex)).map(arr -> Pair.of(arr[0], arr[1]));
     }
 
     @Override
