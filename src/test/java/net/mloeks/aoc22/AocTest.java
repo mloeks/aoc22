@@ -10,6 +10,8 @@ import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.Stack;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -94,5 +97,19 @@ public class AocTest {
                 .map(Stack::pop)
                 .map(Object::toString)
                 .collect(Collectors.joining(""))).isEqualTo("GSLCMFBRP");
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "06_example.txt,10", "06.txt,1582" })
+    public void day6_1(String input, int expectedResult) {
+        MalfunctioningDevice device = new MalfunctioningDevice(input);
+        assertThat(device.findStartOfPackageMarker(4)).isEqualTo(expectedResult);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "06_example.txt,29", "06.txt,1582" })
+    public void day6_2(String input, int expectedResult) {
+        MalfunctioningDevice device = new MalfunctioningDevice(input);
+        assertThat(device.findStartOfPackageMarker(14)).isEqualTo(expectedResult);
     }
 }
