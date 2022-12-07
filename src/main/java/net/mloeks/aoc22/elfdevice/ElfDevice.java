@@ -1,12 +1,12 @@
-package net.mloeks.aoc22;
+package net.mloeks.aoc22.elfdevice;
 
 import net.mloeks.aoc22.util.PuzzleInputReader;
 
-public class MalfunctioningDevice {
+public class ElfDevice {
 
     private final String datastream;
 
-    public MalfunctioningDevice(final String input) {
+    public ElfDevice(final String input) {
         this.datastream = PuzzleInputReader.readAll(input).get(0);
     }
 

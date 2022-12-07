@@ -1,5 +1,8 @@
 package net.mloeks.aoc22;
 
+import net.mloeks.aoc22.elfdevice.ElfDevice;
+import net.mloeks.aoc22.elfdevice.ElfDeviceFile;
+import net.mloeks.aoc22.elfdevice.ElfDeviceFileSystem;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
 import net.mloeks.aoc22.rockpaperscissors.SimpleXyzMappingStrategy;
@@ -19,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -102,14 +104,35 @@ public class AocTest {
     @ParameterizedTest
     @CsvSource(value = { "06_example.txt,10", "06.txt,1582" })
     public void day6_1(String input, int expectedResult) {
-        MalfunctioningDevice device = new MalfunctioningDevice(input);
+        ElfDevice device = new ElfDevice(input);
         assertThat(device.findStartOfPackageMarker(4)).isEqualTo(expectedResult);
     }
 
     @ParameterizedTest
-    @CsvSource(value = { "06_example.txt,29", "06.txt,1582" })
+    @CsvSource(value = { "06_example.txt,29", "06.txt,3588" })
     public void day6_2(String input, int expectedResult) {
-        MalfunctioningDevice device = new MalfunctioningDevice(input);
-        assertThat(device.findStartOfPackageMarker(14)).isEqualTo(expectedResult);
+        ElfDevice elfDevice = new ElfDevice(input);
+        assertThat(elfDevice.findStartOfPackageMarker(14)).isEqualTo(expectedResult);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "07_example.txt,95437", "07.txt,1915606" })
+    public void day7_1(String input, int expectedTotalDirectorySize) {
+        ElfDeviceFileSystem fileSystem = ElfDeviceFileSystem.buildFromCommandInput(input, 70_000_000);
+
+        long dirSize = fileSystem.getDirectories().stream()
+                .mapToLong(ElfDeviceFile::getTotalSize)
+                .filter(s -> s <= 100_000)
+                .sum();
+        assertThat(dirSize).isEqualTo(expectedTotalDirectorySize);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "07_example.txt,24933642", "07.txt,5025657" })
+    public void day7_2(String input, int expectedSpaceFreedUp) {
+        ElfDeviceFileSystem fileSystem = ElfDeviceFileSystem.buildFromCommandInput(input, 70_000_000);
+
+        long freedSpace = fileSystem.freeUpSpace(30_000_000);
+        assertThat(freedSpace).isEqualTo(expectedSpaceFreedUp);
     }
 }
