@@ -12,6 +12,7 @@ import net.mloeks.aoc22.rucksack.RucksackUtils;
 import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
+import net.mloeks.aoc22.treehouse.TallTreeMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -135,4 +136,19 @@ public class AocTest {
         long freedSpace = fileSystem.freeUpSpace(30_000_000);
         assertThat(freedSpace).isEqualTo(expectedSpaceFreedUp);
     }
+
+    @ParameterizedTest
+    @CsvSource(value = { "08_example.txt,21", "08.txt,1669" })
+    public void day8_1(String input, int expectedVisibleTrees) {
+        TallTreeMap map = new TallTreeMap(input);
+        assertThat(map.countVisibleTrees()).isEqualTo(expectedVisibleTrees);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "08_example.txt,8", "08.txt,331344" })
+    public void day8_2(String input, int expectedScenicScore) {
+        TallTreeMap map = new TallTreeMap(input);
+        assertThat(map.mostScenicTreeScore()).isEqualTo(expectedScenicScore);
+    }
+
 }
