@@ -12,7 +12,6 @@ import net.mloeks.aoc22.rucksack.RucksackUtils;
 import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
-import net.mloeks.aoc22.treehouse.TallTreeMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -149,6 +148,20 @@ public class AocTest {
     public void day8_2(String input, int expectedScenicScore) {
         TallTreeMap map = new TallTreeMap(input);
         assertThat(map.mostScenicTreeScore()).isEqualTo(expectedScenicScore);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "09_example.txt,13", "09.txt,6470" })
+    public void day9_1(String input, int expectedTailPositionCount) {
+        Rope rope = new Rope(input, 2);
+        assertThat(rope.getTailPositions().stream().distinct().count()).isEqualTo(expectedTailPositionCount);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "09_example2.txt,36", "09.txt,2658" })
+    public void day9_2(String input, int expectedTailPositionCount) {
+        Rope rope = new Rope(input, 10);
+        assertThat(rope.getTailPositions().stream().distinct().count()).isEqualTo(expectedTailPositionCount);
     }
 
 }

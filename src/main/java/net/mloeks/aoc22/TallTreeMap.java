@@ -1,4 +1,4 @@
-package net.mloeks.aoc22.treehouse;
+package net.mloeks.aoc22;
 
 import net.mloeks.aoc22.util.PuzzleInputReader;
 
@@ -48,11 +48,11 @@ public class TallTreeMap {
 
     private boolean isTreeVisible(int[][] map, Coordinate tree) {
         int treeHeight = map[tree.x()][tree.y()];
-        for (ManhattanViewDirection direction : ManhattanViewDirection.values()) {
+        for (ManhattanDirection direction : ManhattanDirection.values()) {
             int otherTreeHeight;
             Coordinate treeToCheck = tree;
             do {
-                treeToCheck = direction.look(treeToCheck);
+                treeToCheck = direction.move(treeToCheck);
                 if (outOfMapBounds(treeToCheck)) {
                     return true;
                 }
@@ -66,12 +66,12 @@ public class TallTreeMap {
     private long calculateTreeScore(int[][] map, Coordinate tree) {
         int treeHeight = map[tree.x()][tree.y()];
         long score = 1;
-        for (ManhattanViewDirection direction : ManhattanViewDirection.values()) {
+        for (ManhattanDirection direction : ManhattanDirection.values()) {
             int otherTreeHeight;
             long viewDistance = 0;
             Coordinate treeToCheck = tree;
             do {
-                treeToCheck = direction.look(treeToCheck);
+                treeToCheck = direction.move(treeToCheck);
                 if (outOfMapBounds(treeToCheck)) {
                     break;
                 }
