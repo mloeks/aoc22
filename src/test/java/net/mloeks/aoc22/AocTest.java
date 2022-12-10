@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -162,6 +163,16 @@ public class AocTest {
     public void day9_2(String input, int expectedTailPositionCount) {
         Rope rope = new Rope(input, 10);
         assertThat(rope.getTailPositions().stream().distinct().count()).isEqualTo(expectedTailPositionCount);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "10_example.txt,13140", "10.txt,14920" })
+    public void day10(String input, int expectedSumOfSignalStrengths) {
+        CathodeRayTube cathodeRayTube = new CathodeRayTube(input);
+        assertThat(cathodeRayTube.getSignalStrengths().stream().mapToLong(l -> l).sum())
+                .isEqualTo(expectedSumOfSignalStrengths);
+
+        System.out.println(cathodeRayTube.draw(40));
     }
 
 }

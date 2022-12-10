@@ -12,7 +12,7 @@ import static net.mloeks.aoc22.ManhattanDirection.fromUrdl;
 
 public class Rope {
 
-    private List<Coordinate> rope;
+    private final List<Coordinate> rope;
     private final List<Coordinate> tailPositions;
 
     public Rope(final String movementInstructions, final int knotCount) {
