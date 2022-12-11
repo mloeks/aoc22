@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -32,6 +33,25 @@ public class PuzzleInputReader implements AutoCloseable {
         try (PuzzleInputReader reader = new PuzzleInputReader(resource)) {
             return reader.stream().toList();
         }
+    }
+
+    public static <T> List<T> readAllSeparatedOn(
+            final String resource, final Predicate<String> separateOn, final Function<List<String>, T> mapper
+    ) {
+        List<T> result = new LinkedList<>();
+        try (PuzzleInputReader reader = new PuzzleInputReader(resource)) {
+            final List<String> batch = new LinkedList<>();
+            reader.stream().forEach(line -> {
+                if (separateOn.test(line)) {
+                    result.add(mapper.apply(new LinkedList<>(batch)));
+                    batch.clear();
+                } else {
+                    batch.add(line);
+                }
+            });
+            result.add(mapper.apply(new LinkedList<>(batch)));
+        }
+        return result;
     }
 
     public Stream<String> stream() {
