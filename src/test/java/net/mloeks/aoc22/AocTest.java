@@ -3,6 +3,7 @@ package net.mloeks.aoc22;
 import net.mloeks.aoc22.elfdevice.ElfDevice;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFile;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFileSystem;
+import net.mloeks.aoc22.monkeybusiness.StuffSlingingSimianShenanigans;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
 import net.mloeks.aoc22.rockpaperscissors.SimpleXyzMappingStrategy;
@@ -12,17 +13,18 @@ import net.mloeks.aoc22.rucksack.RucksackUtils;
 import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -173,6 +175,27 @@ public class AocTest {
                 .isEqualTo(expectedSumOfSignalStrengths);
 
         System.out.println(cathodeRayTube.draw(40));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "11_example.txt,10605", "11.txt,102399" })
+    public void day11_1(String input, long expectedMonkeyBusiness) {
+        StuffSlingingSimianShenanigans game =
+                new StuffSlingingSimianShenanigans(input, 20, item -> BigInteger.valueOf((long) Math.floor(item.doubleValue() / 3.0)));
+        game.play();
+
+        assertThat(game.calculateMonkeyBusiness()).isEqualTo(expectedMonkeyBusiness);
+    }
+
+    @Disabled("oom")
+    @ParameterizedTest
+    @CsvSource(value = { "11_example.txt,2713310158", "11.txt,102399" })
+    public void day11_2(String input, long expectedMonkeyBusiness) {
+        StuffSlingingSimianShenanigans game =
+                new StuffSlingingSimianShenanigans(input, 10_000);
+        game.play();
+
+        assertThat(game.calculateMonkeyBusiness()).isEqualTo(expectedMonkeyBusiness);
     }
 
 }
