@@ -3,6 +3,8 @@ package net.mloeks.aoc22;
 import net.mloeks.aoc22.elfdevice.ElfDevice;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFile;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFileSystem;
+import net.mloeks.aoc22.hillclimbing.HeightMap;
+import net.mloeks.aoc22.hillclimbing.Node;
 import net.mloeks.aoc22.monkeybusiness.StuffSlingingSimianShenanigans;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
@@ -196,6 +198,26 @@ public class AocTest {
         game.play();
 
         assertThat(game.calculateMonkeyBusiness()).isEqualTo(expectedMonkeyBusiness);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "12_example.txt,31", "12.txt,352" })
+    public void day12_1(String input, long expectedShortestPathLength) {
+        HeightMap heightMap = new HeightMap(input);
+        assertThat(heightMap.findShortestPath(null)).isEqualTo(expectedShortestPathLength);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "12_example.txt,29", "12.txt,345" })
+    public void day12_2(String input, long expectedShortestPathLength) {
+        HeightMap heightMap = new HeightMap(input);
+
+        int nicestShortestPath = heightMap.getGraph().getNodes().stream()
+                .filter(node -> node.getHeight() == 'a')
+                .map(heightMap::findShortestPath)
+                .min(comparingInt(i -> i)).orElseThrow();
+
+        assertThat(nicestShortestPath).isEqualTo(expectedShortestPathLength);
     }
 
 }
