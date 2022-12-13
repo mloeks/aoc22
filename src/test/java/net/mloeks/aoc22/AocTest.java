@@ -1,10 +1,10 @@
 package net.mloeks.aoc22;
 
 import net.mloeks.aoc22.elfdevice.ElfDevice;
+import net.mloeks.aoc22.elfdevice.ElfDeviceDistressSignal;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFile;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFileSystem;
 import net.mloeks.aoc22.hillclimbing.HeightMap;
-import net.mloeks.aoc22.hillclimbing.Node;
 import net.mloeks.aoc22.monkeybusiness.StuffSlingingSimianShenanigans;
 import net.mloeks.aoc22.rockpaperscissors.OutcomeBasedOnOpponentStrategy;
 import net.mloeks.aoc22.rockpaperscissors.RockPaperScissorsGame;
@@ -218,6 +218,21 @@ public class AocTest {
                 .min(comparingInt(i -> i)).orElseThrow();
 
         assertThat(nicestShortestPath).isEqualTo(expectedShortestPathLength);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "13_example.txt,13", "13.txt,6187" })
+    public void day13_1(String input, long expectedSumOfCorrectPairs) {
+        ElfDeviceDistressSignal distressSignal = new ElfDeviceDistressSignal(input);
+        assertThat(distressSignal.getPacketPairsInCorrectOrder().stream()
+                .mapToInt(k -> k).sum()).isEqualTo(expectedSumOfCorrectPairs);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "13_example.txt,140", "13.txt,23520" })
+    public void day13_2(String input, long expectedDecoderKey) {
+        ElfDeviceDistressSignal distressSignal = new ElfDeviceDistressSignal(input);
+        assertThat(distressSignal.getDecoderKey()).isEqualTo(expectedDecoderKey);
     }
 
 }
