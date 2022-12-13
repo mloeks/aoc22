@@ -1,6 +1,7 @@
 package net.mloeks.aoc22;
 
 import net.mloeks.aoc22.elfdevice.ElfDevice;
+import net.mloeks.aoc22.elfdevice.ElfDeviceDistressSignal;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFile;
 import net.mloeks.aoc22.elfdevice.ElfDeviceFileSystem;
 import net.mloeks.aoc22.hillclimbing.HeightMap;
@@ -218,6 +219,14 @@ public class AocTest {
                 .min(comparingInt(i -> i)).orElseThrow();
 
         assertThat(nicestShortestPath).isEqualTo(expectedShortestPathLength);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "13_example.txt,13", "13.txt,0" })
+    public void day13_1(String input, long expectedSumOfCorrectPairs) {
+        ElfDeviceDistressSignal distressSignal = new ElfDeviceDistressSignal(input);
+        assertThat(distressSignal.getCorrectPackets().stream()
+                .mapToInt(k -> k).sum()).isEqualTo(expectedSumOfCorrectPairs);
     }
 
 }
