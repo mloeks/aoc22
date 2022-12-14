@@ -1,6 +1,6 @@
 package net.mloeks.aoc22.hillclimbing;
 
-import net.mloeks.aoc22.Coordinate;
+import net.mloeks.aoc22.util.Coordinate;
 import net.mloeks.aoc22.ManhattanDirection;
 
 import java.util.List;

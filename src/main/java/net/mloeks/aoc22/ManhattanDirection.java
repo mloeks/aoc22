@@ -1,5 +1,7 @@
 package net.mloeks.aoc22;
 
+import net.mloeks.aoc22.util.Coordinate;
+
 public enum ManhattanDirection {
     NORTH(0,-1),
     EAST(1,0),

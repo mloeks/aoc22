@@ -15,6 +15,7 @@ import net.mloeks.aoc22.rucksack.RucksackUtils;
 import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
+import net.mloeks.aoc22.util.Coordinate;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -233,6 +235,24 @@ public class AocTest {
     public void day13_2(String input, long expectedDecoderKey) {
         ElfDeviceDistressSignal distressSignal = new ElfDeviceDistressSignal(input);
         assertThat(distressSignal.getDecoderKey()).isEqualTo(expectedDecoderKey);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "14_example.txt,24", "14.txt,964" })
+    public void day14_1(String input, long expectedUnits) {
+        CaveProfile caveProfile = new CaveProfile(input, false);
+        caveProfile.simulateDrippingSandFrom(new Coordinate(500,0), () -> false);
+        assertThat(caveProfile.getSandUnits().size()).isEqualTo(expectedUnits);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "14_example.txt,93", "14.txt,32041" })
+    public void day14_2(String input, long expectedUnits) {
+        CaveProfile caveProfile = new CaveProfile(input, true);
+        Coordinate startPouring = new Coordinate(500, 0);
+        caveProfile.simulateDrippingSandFrom(startPouring,
+                () -> caveProfile.getSandUnits().contains(startPouring));
+        assertThat(caveProfile.getSandUnits().size()).isEqualTo(expectedUnits);
     }
 
 }

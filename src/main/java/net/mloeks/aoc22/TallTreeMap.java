@@ -1,5 +1,6 @@
 package net.mloeks.aoc22;
 
+import net.mloeks.aoc22.util.Coordinate;
 import net.mloeks.aoc22.util.PuzzleInputReader;
 
 import java.io.StringWriter;
