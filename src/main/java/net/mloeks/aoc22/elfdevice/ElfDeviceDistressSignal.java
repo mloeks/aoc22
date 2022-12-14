@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class ElfDeviceDistressSignal {
 
-    private Map<String, Node> subPacketByIdentifier;
+    private final Map<String, Node> subPacketByIdentifier;
     private final List<Integer> correctPackets;
 
     public ElfDeviceDistressSignal(final String packetsInput) {
@@ -20,7 +20,7 @@ public class ElfDeviceDistressSignal {
             List<Node> packets = reader.stream(line -> !line.trim().isEmpty(),
                     this::parsePacket).toList();
 
-            for (int i = 1; i < packets.size() / 2; i++) {
+            for (int i = 1; i <packets.size() / 2; i++) {
                 if (isPacketPairCorrect(packets.get(2*i-2), packets.get(2*i-1))) {
                     correctPackets.add(i);
                 }
@@ -56,8 +56,8 @@ public class ElfDeviceDistressSignal {
     }
 
     private static String getIdentifier(Node subPacket) {
-        return Optional.ofNullable(stripOuterBrackets(subPacket.getChildren().toString()))
-                .map(s -> s.replaceAll(",", "|"))
+        return Optional.ofNullable(subPacket.getChildren().toString())
+                .map(s -> s.replaceAll("\\[\\],", "|"))
                 .orElse("<empty>");
     }
 
