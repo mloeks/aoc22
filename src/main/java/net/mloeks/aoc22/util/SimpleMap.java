@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static java.lang.Integer.MAX_VALUE;
@@ -52,8 +53,21 @@ public class SimpleMap {
     }
 
 
-    public void buffer(final Feature feature, int distance) {
-        throw new NotYetImplementedException();
+    public void buffer(final Feature inputFeature, long distance) {
+        final Coordinate inputPosition = inputFeature.coordinate();
+        for (long x = inputPosition.x() - distance; x <= inputPosition.x() + distance; x++) {
+            for (long y = inputPosition.y() - distance; y <= inputPosition.y() + distance; y++) {
+                final Coordinate current = new Coordinate(x,y);
+                if (manhattanDistance(inputPosition, current) <= distance && getAt(current).isEmpty()) {
+                    add(new Feature(current, Map.of("value", "#")));
+                }
+            }
+        }
+    }
+
+    public long manhattanDistance(final Coordinate here, final Coordinate there) {
+        Coordinate delta = here.delta(there);
+        return Math.abs(delta.x()) + Math.abs(delta.y());
     }
 
     public String print(final String attribute, final String noDataValue) {

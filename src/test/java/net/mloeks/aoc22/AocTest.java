@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class AocTest {
 
@@ -253,6 +252,13 @@ public class AocTest {
         caveProfile.simulateDrippingSandFrom(startPouring,
                 () -> caveProfile.getSandUnits().contains(startPouring));
         assertThat(caveProfile.getSandUnits().size()).isEqualTo(expectedUnits);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "15_example.txt,10,26", "15.txt,2000000,5040643" })
+    public void day15_1(String input, long row, int expectedPositions) {
+        BeaconMap beaconMap = new BeaconMap(input);
+        assertThat(beaconMap.scanRowForPositionsInReach(row)).hasSize(expectedPositions);
     }
 
 }
