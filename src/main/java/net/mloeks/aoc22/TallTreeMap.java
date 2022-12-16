@@ -1,103 +1,88 @@
 package net.mloeks.aoc22;
 
 import net.mloeks.aoc22.util.Coordinate;
+import net.mloeks.aoc22.util.Feature;
 import net.mloeks.aoc22.util.PuzzleInputReader;
+import net.mloeks.aoc22.util.SimpleMap;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TallTreeMap {
 
-    private final int[][] map;
+    private final SimpleMap map;
 
     public TallTreeMap(final String mapInput) {
         List<String> treeLines = PuzzleInputReader.readAll(mapInput);
-        map = new int[treeLines.get(0).length()][treeLines.size()];
+        map = new SimpleMap();
 
         for (int y=0; y<treeLines.size(); y++) {
             String treeLine = treeLines.get(y);
             for (int x=0; x<treeLine.length(); x++) {
-                map[x][y] = Integer.parseInt(String.valueOf(treeLine.charAt(x)));
+                map.add(new Feature(new Coordinate(x,y),
+                        Map.of("height", Integer.parseInt(String.valueOf(treeLine.charAt(x))))));
             }
         }
     }
 
     public long countVisibleTrees() {
-        long visible = 0;
-
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                if (isTreeVisible(map, new Coordinate(x,y))) visible++;
-            }
-        }
-
-        return visible;
+        return map.getFeatures(this::isTreeVisible).size();
     }
 
     public long mostScenicTreeScore() {
-        long highestScenicScore = Long.MIN_VALUE;
+        AtomicLong highestScenicScore = new AtomicLong(Long.MIN_VALUE);
 
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                long score = calculateTreeScore(map, new Coordinate(x,y));
-                if (score > highestScenicScore) highestScenicScore = score;
-            }
-        }
+        map.getFeatures().stream()
+                .map(this::calculateTreeScore)
+                .forEach(score -> {
+                    if (score > highestScenicScore.get()) highestScenicScore.set(score); });
 
-        return highestScenicScore;
+        return highestScenicScore.get();
     }
 
-    private boolean isTreeVisible(int[][] map, Coordinate tree) {
-        int treeHeight = map[tree.x()][tree.y()];
+    private boolean isTreeVisible(final Feature feature) {
         for (ManhattanDirection direction : ManhattanDirection.values()) {
             int otherTreeHeight;
-            Coordinate treeToCheck = tree;
+            Coordinate treeToCheck = feature.coordinate();
             do {
                 treeToCheck = direction.move(treeToCheck);
-                if (outOfMapBounds(treeToCheck)) {
+                if (!map.getBounds().contain(treeToCheck)) {
                     return true;
                 }
-                otherTreeHeight = map[treeToCheck.x()][treeToCheck.y()];
-            } while (otherTreeHeight < treeHeight);
+                otherTreeHeight = map.getAt(new Coordinate(treeToCheck.x(), treeToCheck.y()))
+                        .map(f -> (int) f.getAttributeValue("height"))
+                        .orElseThrow();
+            } while (otherTreeHeight < (int) feature.getAttributeValue("height"));
         }
 
         return false;
     }
 
-    private long calculateTreeScore(int[][] map, Coordinate tree) {
-        int treeHeight = map[tree.x()][tree.y()];
+    private long calculateTreeScore(final Feature feature) {
         long score = 1;
         for (ManhattanDirection direction : ManhattanDirection.values()) {
             int otherTreeHeight;
             long viewDistance = 0;
-            Coordinate treeToCheck = tree;
+            Coordinate treeToCheck = feature.coordinate();
             do {
                 treeToCheck = direction.move(treeToCheck);
-                if (outOfMapBounds(treeToCheck)) {
+                if (!map.getBounds().contain(treeToCheck)) {
                     break;
                 }
-                otherTreeHeight = map[treeToCheck.x()][treeToCheck.y()];
+                otherTreeHeight = map.getAt(new Coordinate(treeToCheck.x(), treeToCheck.y()))
+                        .map(f -> (int) f.getAttributeValue("height"))
+                        .orElseThrow();
                 viewDistance++;
-            } while (otherTreeHeight < treeHeight);
+            } while (otherTreeHeight < (int) feature.getAttributeValue("height"));
             score *= viewDistance;
         }
 
         return score;
     }
 
-    private boolean outOfMapBounds(Coordinate tree) {
-        return tree.x() < 0 || tree.x() >= map.length
-                || tree.y() < 0 || tree.y() >= map[tree.x()].length;
-    }
-
     public String toString() {
-        StringWriter writer = new StringWriter();
-        for (int y=0; y<map.length; y++) {
-            for (int x=0; x<map[y].length; x++) {
-                writer.append(String.valueOf(map[x][y]));
-            }
-            writer.append("\n");
-        }
-        return writer.toString();
+        return map.print("height", "");
     }
 }

@@ -53,7 +53,7 @@ public class HeightMap {
                 for (ManhattanDirection direction : ManhattanDirection.values()) {
                     try {
                         Coordinate adjacentCoordinate = direction.move(new Coordinate(x, y));
-                        Node adjacentNode = map[adjacentCoordinate.x()][adjacentCoordinate.y()];
+                        Node adjacentNode = map[(int) adjacentCoordinate.x()][(int) adjacentCoordinate.y()];
                         if (canClimbThere(currentNode, adjacentNode)) {
                             currentNode.addDestination(adjacentNode, 1);
                         }

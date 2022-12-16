@@ -1,18 +1,18 @@
 package net.mloeks.aoc22.util;
 
-public record Coordinate(int x, int y) {
+public record Coordinate(long x, long y) {
 
     public static Coordinate fromXyString(final String commaSeparatedString)
             throws IndexOutOfBoundsException, NumberFormatException {
         String[] splitted = commaSeparatedString.split(",");
-        return new Coordinate(Integer.parseInt(splitted[0].trim()), Integer.parseInt(splitted[1].trim()));
+        return new Coordinate(Long.parseLong(splitted[0].trim()), Long.parseLong(splitted[1].trim()));
     }
 
     public Coordinate delta(Coordinate other) {
         return new Coordinate(other.x - x, other.y - y);
     }
 
-    public Coordinate move(int dx, int dy) {
+    public Coordinate move(long dx, long dy) {
         return new Coordinate(x + dx, y + dy);
     }
 

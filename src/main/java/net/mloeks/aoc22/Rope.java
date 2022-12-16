@@ -57,8 +57,8 @@ public class Rope {
           if (touches(knot, knotToFollow)) return knot;
 
           Coordinate delta = knot.delta(knotToFollow);
-          int dx = delta.x() == 0 ? 0 : delta.x()/Math.abs(delta.x());
-          int dy = delta.y() == 0 ? 0 : delta.y()/Math.abs(delta.y());
+          long dx = delta.x() == 0 ? 0 : delta.x()/Math.abs(delta.x());
+          long dy = delta.y() == 0 ? 0 : delta.y()/Math.abs(delta.y());
 
           return knot.move(dx, dy);
     }
