@@ -16,6 +16,7 @@ import net.mloeks.aoc22.supplystack.CrateMover9000;
 import net.mloeks.aoc22.supplystack.CrateMover9001;
 import net.mloeks.aoc22.supplystack.SupplyStackOrganiser;
 import net.mloeks.aoc22.util.Coordinate;
+import net.mloeks.aoc22.util.SimpleMap;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,6 +24,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -259,6 +261,17 @@ public class AocTest {
     public void day15_1(String input, long row, int expectedPositions) {
         BeaconMap beaconMap = new BeaconMap(input);
         assertThat(beaconMap.scanRowForPositionsInReach(row)).hasSize(expectedPositions);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "15_example.txt,20,56000011", "15.txt,4000000,0" })
+    public void day15_2(String input, int bounds, int expectedTuningFrequency) {
+        BeaconMap beaconMap = new BeaconMap(input);
+        Optional<Coordinate> distressBeaconPosition = beaconMap
+                .findOnlyPossibleBeaconPositionWithinBounds(new SimpleMap.Bounds(0, bounds, 0, bounds));
+
+        assertThat(distressBeaconPosition).isPresent();
+        assertThat(beaconMap.getTuningFrequency(distressBeaconPosition.get())).isEqualTo(expectedTuningFrequency);
     }
 
 }
